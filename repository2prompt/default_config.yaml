@@ -1,0 +1,50 @@
+# GitHub API configuration
+github_api_base_url: "https://api.github.com"
+
+# File processing configuration
+max_file_size: 1048576  # 1MB
+supported_file_extensions:
+  - .py
+  - .js
+  - .java
+  - .c
+  - .cpp
+  - .md
+  - .txt
+  - .html
+  - .css
+  - .json
+  - .yaml
+  - .yml
+
+# Directories and files to ignore
+ignore_dirs:
+  - .git
+  - node_modules
+  - venv
+  - __pycache__
+  - .idea
+  - .vscode
+
+ignore_files:
+  - .gitignore
+  - .DS_Store
+  - Thumbs.db
+  - .env
+
+# Output configuration
+supported_output_formats:
+  - markdown
+  - json
+  - text
+default_output_format: markdown
+
+# Repository processing configuration
+max_files_to_process: 100
+
+# Prompt generation configuration
+max_prompt_length: 4000
+include_file_metadata: true
+
+# Template configuration
+default_template_path: "templates/default_template.j2"

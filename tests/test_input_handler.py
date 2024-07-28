@@ -1,12 +1,13 @@
 import unittest
 import os
 from repository2prompt.utils import input_handler
+from repository2prompt.config import CONFIG
 
 class TestInputHandler(unittest.TestCase):
 
     def test_is_github_url(self):
-        self.assertTrue(input_handler.is_github_url("https://github.com/octocat/Hello-World"))
-        self.assertTrue(input_handler.is_github_url("https://github.com/octocat/octocat.github.io"))
+        self.assertTrue(input_handler.is_github_url("https://github.com/user/repo"))
+        self.assertTrue(input_handler.is_github_url("https://github.com/user/repo/"))
         self.assertFalse(input_handler.is_github_url("https://gitlab.com/user/repo"))
         self.assertFalse(input_handler.is_github_url("not a url"))
 
@@ -15,8 +16,8 @@ class TestInputHandler(unittest.TestCase):
         self.assertFalse(input_handler.is_local_directory("nonexistent_directory"))
 
     def test_handle_input_github(self):
-        result = input_handler.handle_input("https://github.com/octocat/octocat.github.io")
-        self.assertEqual(result, {'type': 'github_url', 'url': 'https://github.com/octocat/octocat.github.io'})
+        result = input_handler.handle_input("https://github.com/user/repo")
+        self.assertEqual(result, {'type': 'github_url', 'url': 'https://github.com/user/repo'})
 
     def test_handle_input_local(self):
         result = input_handler.handle_input(".")

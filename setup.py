@@ -4,14 +4,19 @@ setup(
     name="repository2prompt",
     version="0.1.0",
     packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         "requests",
         "jinja2",
+        "pyyaml",
     ],
     entry_points={
         "console_scripts": [
             "repository2prompt=repository2prompt.repository2prompt:main",
         ],
+    },
+    package_data={
+        'repository2prompt': ['default_config.yaml', 'templates/*.j2'],
     },
     author="Your Name",
     author_email="your.email@example.com",

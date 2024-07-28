@@ -47,6 +47,8 @@ class Repository2Prompt:
             return None
         except Exception as e:
             print(f"An unexpected error occurred: {str(e)}")
+            print(f"Template path: {self.template_path}")
+            print(f"Current working directory: {os.getcwd()}")
             return None
 
 def main():

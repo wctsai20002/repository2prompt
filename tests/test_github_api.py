@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch, Mock
 from repository2prompt.utils import github_api
 from repository2prompt.utils.github_api import GitHubAPIError
+from repository2prompt.config import CONFIG
 
 class TestGitHubAPI(unittest.TestCase):
 
