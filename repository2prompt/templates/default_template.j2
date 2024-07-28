@@ -1,14 +1,36 @@
-# Repository to Prompt
+# {{ repo_name }}
 
-This prompt contains the content of the following files from the repository:
+This prompt contains the content of the repository "{{ repo_name }}". Below, you will find a detailed file tree structure followed by the contents of each file.
+
+## Important Note on Code Block Formatting
+
+In this prompt, we use four backticks (````) to enclose file contents. This is a non-standard approach chosen to avoid potential conflicts with triple backticks that might appear within the file contents themselves. When interpreting this prompt, please treat content between four backticks as code blocks or file contents.
+
+## File Tree Structure
+
+The following is the file tree structure of the repository:
+
+````
+{{ file_tree }}
+````
+
+## File Contents
+
+Below are the contents of each file in the repository. Each file's content is enclosed within four backticks (````) to ensure proper separation and formatting:
 
 {% for file in files %}
-## {{ file.path }}
+### {{ file.path }}
 
-```
+The following is the content of the file `{{ file.path }}`:
+
+````
 {{ file.content }}
-```
+````
 
 {% endfor %}
 
 Total files processed: {{ files|length }}
+
+## Conclusion
+
+This concludes the content of the "{{ repo_name }}" repository. Remember, all file contents in this prompt are enclosed within four backticks (````) instead of the standard three. This ensures that any code blocks or backticks within the files themselves do not interfere with the overall structure of this prompt.

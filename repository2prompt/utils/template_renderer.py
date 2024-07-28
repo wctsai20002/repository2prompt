@@ -1,17 +1,40 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import os
-from ..config import DEFAULT_TEMPLATE_PATH
+from ..config import CONFIG
 
-def render(processed_files, template_path=None):
+def generate_file_tree(files):
+    tree = {}
+    for file in files:
+        parts = file['path'].split('/')
+        current = tree
+        for part in parts[:-1]:
+            if part not in current:
+                current[part] = {}
+            current = current[part]
+        current[parts[-1]] = "file"
+    return tree
+
+def tree_to_string(tree, indent=""):
+    result = ""
+    for key, value in sorted(tree.items()):
+        if value == "file":
+            result += f"{indent}├── {key}\n"
+        else:
+            result += f"{indent}├── {key}/\n"
+            result += tree_to_string(value, indent + "│   ")
+    return result
+
+def render(processed_files, template_path=None, repo_name=None):
     """
     Render the processed files using a Jinja2 template
     
     :param processed_files: List of dictionaries containing processed file information
     :param template_path: Path to the Jinja2 template file (optional)
+    :param repo_name: Name of the repository or local directory
     :return: Rendered content as a string
     """
     if template_path is None:
-        template_path = DEFAULT_TEMPLATE_PATH
+        template_path = CONFIG['default_template_path']
 
     # Ensure the template file exists
     if not os.path.exists(template_path):
@@ -25,54 +48,18 @@ def render(processed_files, template_path=None):
         autoescape=select_autoescape(['html', 'xml'])
     )
 
+    # Generate file tree
+    file_tree = generate_file_tree(processed_files)
+    file_tree_string = tree_to_string(file_tree)
+
     # Load the template
     template = env.get_template(template_file)
 
-    # Render the template with the processed files
-    rendered_content = template.render(files=processed_files)
+    # Render the template with the processed files and file tree
+    rendered_content = template.render(
+        files=processed_files,
+        file_tree=file_tree_string,
+        repo_name=repo_name
+    )
 
     return rendered_content
-
-# Test code
-if __name__ == "__main__":
-    # Mock processed files for testing
-    mock_processed_files = [
-        {
-            'name': 'readme.md',
-            'path': 'readme.md',
-            'content': '# Sample README\n\nThis is a sample readme file.',
-            'size': 45
-        },
-        {
-            'name': 'script.py',
-            'path': 'script.py',
-            'content': 'def hello():\n    print("Hello, world!")\n\nhello()',
-            'size': 52
-        }
-    ]
-
-    # Create a sample template file for testing
-    sample_template = """
-    Repository Files:
-    {% for file in files %}
-    - {{ file.name }} ({{ file.size }} bytes)
-      Content:
-      ```
-      {{ file.content }}
-      ```
-    {% endfor %}
-    """
-    
-    with open('sample_template.j2', 'w') as f:
-        f.write(sample_template)
-
-    # Test the render function
-    try:
-        rendered_content = render(mock_processed_files, 'sample_template.j2')
-        print("Rendered content:")
-        print(rendered_content)
-    except Exception as e:
-        print(f"Error: {str(e)}")
-
-    # Clean up the sample template file
-    os.remove('sample_template.j2')

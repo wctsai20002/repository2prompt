@@ -15,6 +15,12 @@ class Repository2Prompt:
             # Handle input
             input_data = input_handler.handle_input(self.input_path)
 
+            # Determine repo name
+            if input_data['type'] == 'github_url':
+                repo_name = input_data['url'].split('/')[-1]
+            else:  # local directory
+                repo_name = os.path.basename(input_data['path'])
+
             # Fetch repository content
             if input_data['type'] == 'github_url':
                 repo_files = github_api.fetch_repo_content(input_data['url'])
@@ -33,7 +39,7 @@ class Repository2Prompt:
                         file['content'] = f.read()
 
             # Render template
-            rendered_content = template_renderer.render(processed_files, self.template_path)
+            rendered_content = template_renderer.render(processed_files, self.template_path, repo_name)
 
             # Truncate content if it exceeds MAX_PROMPT_LENGTH
             if len(rendered_content) > config.MAX_PROMPT_LENGTH:
@@ -47,8 +53,6 @@ class Repository2Prompt:
             return None
         except Exception as e:
             print(f"An unexpected error occurred: {str(e)}")
-            print(f"Template path: {self.template_path}")
-            print(f"Current working directory: {os.getcwd()}")
             return None
 
 def main():
