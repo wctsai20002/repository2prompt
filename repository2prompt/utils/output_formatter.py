@@ -74,6 +74,35 @@ def format_output(repo_name, processed_files, template_path, output_format):
         
         return output
     
+    elif output_format == 'split':
+        file_tree = generate_file_tree(processed_files)
+        file_tree_string = tree_to_string(file_tree)
+        prompts = CONFIG['split_format_prompts']
+        
+        split_output = [
+            {
+                "prompt": prompts['initial'].format(final=prompts['final']),
+                "content": prompts['repo_name'].format(repo_name=repo_name)
+            },
+            {
+                "prompt": prompts['file_tree'],
+                "content": file_tree_string
+            }
+        ]
+        
+        for file in processed_files:
+            split_output.append({
+                "prompt": prompts['file_content'].format(file_path=file['path']),
+                "content": file['content']
+            })
+        
+        split_output.append({
+            "prompt": prompts['final'],
+            "content": prompts['conclusion'].format(file_count=len(processed_files))
+        })
+        
+        return json.dumps(split_output, indent=2)
+    
     else:
         raise ValueError(f"Unsupported output format: {output_format}")
 

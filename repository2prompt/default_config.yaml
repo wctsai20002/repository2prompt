@@ -37,7 +37,17 @@ supported_output_formats:
   - markdown
   - json
   - text
+  - split
 default_output_format: markdown
+
+# Split format prompt templates
+split_format_prompts:
+  initial: "I am going to provide you with the file tree and code of a repository. Please do not respond until I say {final}"
+  repo_name: "The repository name is {repo_name}"
+  file_tree: "Here is the file tree of the repository:"
+  file_content: "Here is the code for the file at `{file_path}`"
+  final: "That's all the files."
+  conclusion: "All {file_count} files from the repository have been provided."
 
 # Repository processing configuration
 max_files_to_process: 100

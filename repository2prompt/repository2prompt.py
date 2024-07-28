@@ -2,13 +2,13 @@ import argparse
 import os
 from .utils import input_handler, github_api, file_processor, template_renderer, output_formatter
 from .utils.github_api import GitHubAPIError
-from . import config
+from .config import CONFIG
 
 class Repository2Prompt:
     def __init__(self, input_path, template_path=None, output_format=None):
         self.input_path = input_path
-        self.template_path = template_path or config.DEFAULT_TEMPLATE_PATH
-        self.output_format = output_format or config.DEFAULT_OUTPUT_FORMAT
+        self.template_path = template_path or CONFIG['default_template_path']
+        self.output_format = output_format or CONFIG['default_output_format']
 
     def process(self):
         try:
@@ -31,7 +31,7 @@ class Repository2Prompt:
             processed_files = file_processor.process_files(repo_files, is_local=(input_data['type'] == 'local_directory'))
 
             # Fetch file contents
-            for file in processed_files[:config.MAX_FILES_TO_PROCESS]:
+            for file in processed_files[:CONFIG['max_files_to_process']]:
                 if input_data['type'] == 'github_url':
                     file['content'] = github_api.fetch_file_content(file['url'])
                 else:
@@ -44,16 +44,20 @@ class Repository2Prompt:
         except GitHubAPIError as e:
             print(f"GitHub API Error occurred: {e}")
             return None
+        except ValueError as e:
+            print(f"Error: {str(e)}")
+            return None
         except Exception as e:
             print(f"An unexpected error occurred: {str(e)}")
             return None
+
 
 def main():
     parser = argparse.ArgumentParser(description="Convert GitHub repositories or local directories into LLM prompts.")
     parser.add_argument("input_path", help="GitHub repository URL or path to local directory")
     parser.add_argument("-t", "--template", help="Path to custom Jinja2 template file")
-    parser.add_argument("-f", "--format", choices=config.SUPPORTED_OUTPUT_FORMATS, default=config.DEFAULT_OUTPUT_FORMAT,
-                        help=f"Output format (default: {config.DEFAULT_OUTPUT_FORMAT})")
+    parser.add_argument("-f", "--format", choices=CONFIG['supported_output_formats'], default=CONFIG['default_output_format'],
+                        help=f"Output format (default: {CONFIG['default_output_format']})")
     args = parser.parse_args()
 
     converter = Repository2Prompt(args.input_path, args.template, args.format)
