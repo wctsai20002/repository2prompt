@@ -26,6 +26,30 @@ def get_headers():
         headers['Authorization'] = f'token {GITHUB_API_TOKEN}'
     return headers
 
+def get_default_branch(repo_url):
+    """
+    Get the default branch of a GitHub repository
+    
+    :param repo_url: URL of the GitHub repository
+    :return: Name of the default branch
+    """
+    try:
+        _, _, _, username, repo_name = repo_url.rstrip('/').split('/')
+    except ValueError:
+        raise GitHubAPIError(f"Invalid GitHub URL: {repo_url}")
+
+    api_url = f"{GITHUB_API_BASE_URL}/repos/{username}/{repo_name}"
+    
+    try:
+        response = requests.get(api_url, headers=get_headers())
+        response.raise_for_status()
+        repo_data = response.json()
+        return repo_data['default_branch']
+    except requests.RequestException as e:
+        raise GitHubAPIError(f"Error fetching repository information: {str(e)}",
+                             status_code=e.response.status_code if e.response else None,
+                             response_body=e.response.text if e.response else None)
+
 def fetch_repo_content(repo_url):
     """
     Fetch the content of a GitHub repository
@@ -38,7 +62,10 @@ def fetch_repo_content(repo_url):
     except ValueError:
         raise GitHubAPIError(f"Invalid GitHub URL: {repo_url}")
 
-    api_url = f"{GITHUB_API_BASE_URL}/repos/{username}/{repo_name}/git/trees/main?recursive=1"
+    # Get the default branch
+    default_branch = get_default_branch(repo_url)
+
+    api_url = f"{GITHUB_API_BASE_URL}/repos/{username}/{repo_name}/git/trees/{default_branch}?recursive=1"
     
     try:
         response = requests.get(api_url, headers=get_headers())
@@ -90,6 +117,9 @@ def fetch_file_content(file_url):
 if __name__ == "__main__":
     test_repo_url = "https://github.com/octocat/Hello-World"
     try:
+        default_branch = get_default_branch(test_repo_url)
+        print(f"Default branch: {default_branch}")
+
         repo_content = fetch_repo_content(test_repo_url)
         print("Repository content:")
         for item in repo_content:

@@ -19,7 +19,7 @@ def test_local_directory():
 def test_github_repository():
     print("\nTesting GitHub repository...")
     # Use a small, public GitHub repository for testing
-    converter = Repository2Prompt("https://github.com/octocat/Spoon-Knife")
+    converter = Repository2Prompt("https://github.com/octocat/octocat.github.io")
     result = converter.process()
     print("GitHub repository test result:")
     print(result[:500] + "..." if len(result) > 500 else result)
