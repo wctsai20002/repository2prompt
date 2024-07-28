@@ -1,0 +1,19 @@
+# Repository to Prompt
+
+This prompt contains the content and metadata of the following files from the repository:
+
+{% for file in files %}
+## {{ file.path }}
+
+- File name: {{ file.name }}
+- File size: {{ file.size }} bytes
+
+Content:
+```
+{{ file.content }}
+```
+
+{% endfor %}
+
+Total files processed: {{ files|length }}
+Total size of processed files: {{ files|sum(attribute='size') }} bytes

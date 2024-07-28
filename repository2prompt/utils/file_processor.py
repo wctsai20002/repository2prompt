@@ -1,43 +1,36 @@
 import os
-from ..config import MAX_FILE_SIZE, SUPPORTED_FILE_EXTENSIONS
+from ..config import MAX_FILE_SIZE, SUPPORTED_FILE_EXTENSIONS, IGNORE_DIRS, IGNORE_FILES
 
 def is_supported_file(file_name):
-    """
-    Check if the file is supported based on its extension
-    
-    :param file_name: Name of the file
-    :return: Boolean indicating if the file is supported
-    """
     _, extension = os.path.splitext(file_name)
-    return extension.lower() in SUPPORTED_FILE_EXTENSIONS
+    return extension.lower() in SUPPORTED_FILE_EXTENSIONS and file_name not in IGNORE_FILES
 
 def is_within_size_limit(file_size):
-    """
-    Check if the file size is within the allowed limit
-    
-    :param file_size: Size of the file in bytes
-    :return: Boolean indicating if the file is within size limit
-    """
     return file_size <= MAX_FILE_SIZE
 
-def process_files(repo_content):
-    """
-    Process and filter files from the repository content
-    
-    :param repo_content: List of dictionaries containing file information
-    :return: List of processed and filtered file dictionaries
-    """
+def should_process_directory(dir_name):
+    return dir_name not in IGNORE_DIRS
+
+def process_files(repo_content, is_local=False):
     processed_files = []
     
     for item in repo_content:
         if item['type'] == 'file':
             if is_supported_file(item['name']) and is_within_size_limit(item['size']):
-                processed_files.append({
+                processed_file = {
                     'name': item['name'],
                     'path': item['path'],
-                    'url': item['url'],
                     'size': item['size']
-                })
+                }
+                if is_local:
+                    processed_file['full_path'] = item['full_path']
+                else:
+                    processed_file['url'] = item['url']
+                processed_files.append(processed_file)
+        elif item['type'] == 'dir' and should_process_directory(item['name']):
+            # If it's a directory we want to process, we would need to fetch its contents
+            # This would require additional logic for both local and GitHub cases
+            pass
     
     return processed_files
 

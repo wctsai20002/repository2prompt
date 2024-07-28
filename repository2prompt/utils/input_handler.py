@@ -1,6 +1,7 @@
 import os
 import re
 from urllib.parse import urlparse
+from ..config import IGNORE_DIRS, IGNORE_FILES
 
 def is_github_url(input_path):
     """
@@ -39,9 +40,33 @@ def handle_input(input_path):
     if is_github_url(input_path):
         return {'type': 'github_url', 'url': input_path}
     elif is_local_directory(input_path):
-        return {'type': 'local_directory', 'path': input_path}
+        return {'type': 'local_directory', 'path': os.path.abspath(input_path)}
     else:
         raise ValueError("Invalid input. Please provide a valid GitHub URL or local directory path.")
+
+def get_local_files(directory):
+    """
+    Recursively get all files in a local directory
+    
+    :param directory: Path to the local directory
+    :return: List of dictionaries containing file information
+    """
+    files = []
+    for root, dirs, filenames in os.walk(directory):
+        # Remove ignored directories
+        dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
+        
+        for filename in filenames:
+            if filename not in IGNORE_FILES:
+                file_path = os.path.join(root, filename)
+                files.append({
+                    'name': filename,
+                    'path': os.path.relpath(file_path, directory),
+                    'full_path': file_path,
+                    'size': os.path.getsize(file_path),
+                    'type': 'file'
+                })
+    return files
 
 # Test code
 if __name__ == "__main__":

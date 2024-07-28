@@ -1,0 +1,14 @@
+# Repository to Prompt
+
+This prompt contains the content of the following files from the repository:
+
+{% for file in files %}
+## {{ file.path }}
+
+```
+{{ file.content }}
+```
+
+{% endfor %}
+
+Total files processed: {{ files|length }}
