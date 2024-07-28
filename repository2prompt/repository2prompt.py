@@ -38,17 +38,8 @@ class Repository2Prompt:
                     with open(file['full_path'], 'r', encoding='utf-8') as f:
                         file['content'] = f.read()
 
-            # Render template
-            rendered_content = template_renderer.render(processed_files, self.template_path, repo_name)
-
-            # Truncate content if it exceeds MAX_PROMPT_LENGTH
-            if len(rendered_content) > config.MAX_PROMPT_LENGTH:
-                truncation_message = f"\n\n[Content truncated due to length. Total characters: {len(rendered_content)}]"
-                max_length = config.MAX_PROMPT_LENGTH - len(truncation_message)
-                rendered_content = rendered_content[:max_length] + truncation_message
-
             # Format output
-            return output_formatter.format_output(rendered_content, self.output_format)
+            return output_formatter.format_output(repo_name, processed_files, self.template_path, self.output_format)
         
         except GitHubAPIError as e:
             print(f"GitHub API Error occurred: {e}")

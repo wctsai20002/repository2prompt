@@ -115,21 +115,36 @@ def fetch_file_content(file_url):
 
 # Test code
 if __name__ == "__main__":
-    from repository2prompt.config import CONFIG
+    from ..config import CONFIG
+    from .output_formatter import format_output
     
     test_repo_url = "https://github.com/octocat/Hello-World"
     try:
-        default_branch = get_default_branch(test_repo_url)
-        print(f"Default branch: {default_branch}")
-
+        repo_name = test_repo_url.split('/')[-1]
         repo_content = fetch_repo_content(test_repo_url)
-        print("Repository content:")
+        processed_files = []
+        
         for item in repo_content[:CONFIG['max_files_to_process']]:
-            print(f"- {item['path']} ({item['type']})")
-
-        if repo_content:
-            file_content = fetch_file_content(repo_content[0]['url'])
-            print(f"\nContent of {repo_content[0]['path']}:")
-            print(file_content[:200] + "..." if len(file_content) > 200 else file_content)
+            file_content = fetch_file_content(item['url'])
+            processed_files.append({
+                'path': item['path'],
+                'content': file_content
+            })
+        
+        # Test markdown output
+        markdown_output = format_output(repo_name, processed_files, CONFIG['default_template_path'], 'markdown')
+        print("Markdown Output Preview:")
+        print(markdown_output[:500] + "...\n")
+        
+        # Test JSON output
+        json_output = format_output(repo_name, processed_files, CONFIG['default_template_path'], 'json')
+        print("JSON Output Preview:")
+        print(json_output[:500] + "...\n")
+        
+        # Test text output
+        text_output = format_output(repo_name, processed_files, CONFIG['default_template_path'], 'text')
+        print("Text Output Preview:")
+        print(text_output[:500] + "...\n")
+        
     except GitHubAPIError as e:
         print(f"Error: {e}")

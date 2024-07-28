@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 # Add the parent directory to the Python path to import the package
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -11,6 +12,16 @@ def save_output(content, filename):
         f.write(content)
     print(f"Output saved to {filename}")
 
+def print_preview(content, format):
+    if format == 'json':
+        parsed = json.loads(content)
+        print(json.dumps(parsed, indent=2)[:1000] + "...\n(truncated)")
+    elif format == 'text':
+        lines = content.split('\n')
+        print('\n'.join(lines[:100]) + "\n...\n(truncated)")  # Increased to 100 lines for better preview
+    else:  # markdown
+        print(content[:1000] + "...\n(truncated)")
+
 def main():
     # Example 1: Convert a GitHub repository
     print("Example 1: Converting a GitHub repository")
@@ -19,7 +30,7 @@ def main():
     
     if github_result:
         print("GitHub Repository Result (preview):")
-        print(github_result[:1000] + "...\n(truncated)")
+        print_preview(github_result, "markdown")
         save_output(github_result, "github_repo_prompt.md")
     else:
         print("Failed to process GitHub repository")
@@ -34,7 +45,7 @@ def main():
     
     if local_result:
         print("Local Directory Result (preview, JSON format):")
-        print(local_result[:1000] + "...\n(truncated)")
+        print_preview(local_result, "json")
         save_output(local_result, "local_dir_prompt.json")
     else:
         print("Failed to process local directory")
@@ -51,7 +62,7 @@ def main():
     
     if custom_result:
         print("Custom Configuration Result (preview, Text format):")
-        print(custom_result[:1000] + "...\n(truncated)")
+        print_preview(custom_result, "text")
         save_output(custom_result, "custom_config_prompt.txt")
     else:
         print("Failed to process with custom configuration")
