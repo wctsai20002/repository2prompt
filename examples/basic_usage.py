@@ -19,7 +19,7 @@ def main():
     
     if github_result:
         print("GitHub Repository Result (preview):")
-        print(github_result[:500] + "..." if len(github_result) > 500 else github_result)
+        print(github_result[:1000] + "...\n(truncated)")
         save_output(github_result, "github_repo_prompt.md")
     else:
         print("Failed to process GitHub repository")
@@ -33,8 +33,8 @@ def main():
     local_result = local_converter.process()
     
     if local_result:
-        print("Local Directory Result (preview):")
-        print(local_result[:500] + "..." if len(local_result) > 500 else local_result)
+        print("Local Directory Result (preview, JSON format):")
+        print(local_result[:1000] + "...\n(truncated)")
         save_output(local_result, "local_dir_prompt.json")
     else:
         print("Failed to process local directory")
@@ -42,7 +42,7 @@ def main():
     print("\n" + "="*50 + "\n")
 
     # Example 3: Using custom configuration
-    print("Example 3: Using custom configuration")
+    print("Example 3: Using custom configuration (Text format)")
     custom_config = CONFIG.copy()
     custom_config['max_files_to_process'] = 5
     custom_converter = Repository2Prompt("https://github.com/octocat/octocat.github.io", output_format="text")
@@ -50,8 +50,8 @@ def main():
     custom_result = custom_converter.process()
     
     if custom_result:
-        print("Custom Configuration Result (preview):")
-        print(custom_result[:500] + "..." if len(custom_result) > 500 else custom_result)
+        print("Custom Configuration Result (preview, Text format):")
+        print(custom_result[:1000] + "...\n(truncated)")
         save_output(custom_result, "custom_config_prompt.txt")
     else:
         print("Failed to process with custom configuration")

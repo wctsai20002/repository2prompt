@@ -43,7 +43,9 @@ class Repository2Prompt:
 
             # Truncate content if it exceeds MAX_PROMPT_LENGTH
             if len(rendered_content) > config.MAX_PROMPT_LENGTH:
-                rendered_content = rendered_content[:config.MAX_PROMPT_LENGTH] + "... (truncated)"
+                truncation_message = f"\n\n[Content truncated due to length. Total characters: {len(rendered_content)}]"
+                max_length = config.MAX_PROMPT_LENGTH - len(truncation_message)
+                rendered_content = rendered_content[:max_length] + truncation_message
 
             # Format output
             return output_formatter.format_output(rendered_content, self.output_format)

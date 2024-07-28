@@ -9,18 +9,18 @@ def format_output(rendered_content, output_format):
     :param output_format: Desired output format ('markdown', 'json', or 'text')
     :return: Formatted output as a string
     """
-    if output_format not in SUPPORTED_OUTPUT_FORMATS:
-        raise ValueError(f"Unsupported output format: {output_format}")
-
     if output_format == 'markdown':
         # For markdown, we can return the rendered content as-is
         return rendered_content
     elif output_format == 'json':
-        # For JSON, we need to wrap the content in a dictionary
-        return json.dumps({'content': rendered_content}, indent=2)
+        # For JSON, we need to wrap the content in a dictionary and escape the backticks
+        escaped_content = rendered_content.replace('````', '\\`\\`\\`\\`')
+        return json.dumps({'content': escaped_content}, indent=2)
     elif output_format == 'text':
-        # For plain text, we can return the rendered content as-is
-        return rendered_content
+        # For plain text, we replace four backticks with a custom delimiter
+        return rendered_content.replace('````', '----CODE_BLOCK_START----').replace('````', '----CODE_BLOCK_END----')
+    else:
+        raise ValueError(f"Unsupported output format: {output_format}")
 
 # Test code
 if __name__ == "__main__":
