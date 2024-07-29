@@ -108,6 +108,76 @@ result = converter.process()
 print(result)
 ```
 
+## Configuration
+
+Repository2Prompt uses a YAML configuration file for its settings. There are several ways to customize the configuration:
+
+### Default Configuration
+
+The default configuration is located in `repository2prompt/default_config.yaml` within the package.
+
+### User-level Configuration
+
+You can create a `.repository2prompt.yaml` file in your home directory to override the default settings. This file will be automatically loaded if it exists.
+
+### Project-specific Configuration
+
+For project-specific settings, you can create a custom YAML file and load it in your code. For example:
+
+```python
+import yaml
+from repository2prompt import Repository2Prompt, CONFIG
+
+# Load custom configuration
+with open('path/to/your/custom_config.yaml', 'r') as f:
+    custom_config = yaml.safe_load(f)
+
+# Update the default configuration
+CONFIG.update(custom_config)
+
+# Use the updated configuration
+converter = Repository2Prompt("https://github.com/user/repo")
+result = converter.process()
+```
+
+### Environment Variable
+
+You can also specify a custom configuration file using the `REPOSITORY2PROMPT_CONFIG` environment variable:
+
+```bash
+export REPOSITORY2PROMPT_CONFIG=/path/to/your/custom_config.yaml
+```
+
+### Configuration Options
+
+Key configuration options include:
+- `github_api_token`: Github api token
+- `supported_output_formats`: List of supported output formats
+- `max_file_size`: Maximum file size to process (in bytes)
+- `supported_file_extensions`: List of supported file extensions
+- `ignore_dirs` and `ignore_files`: Lists of directories and files to ignore
+- `max_files_to_process`: Maximum number of files to process
+- `max_prompt_length`: Maximum length of the generated prompt
+- `split_format_prompts`: Prompts of output
+
+Example of a custom configuration file:
+
+```yaml
+github_api_token: "xxx_xxxxxxxxxx"
+max_file_size: 2097152  # 2MB
+ignore_dirs:
+  - node_modules
+  - .git
+  - build
+supported_file_extensions:
+  - .py
+  - .js
+  - .md
+max_files_to_process: 50
+```
+
+Remember that any setting not specified in your custom configuration will use the default value from the package's default configuration.
+
 ## Contributing
 
 We welcome contributions of all forms! If you'd like to contribute to Repository2Prompt, please follow these steps:
