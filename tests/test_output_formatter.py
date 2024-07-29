@@ -18,12 +18,9 @@ class TestOutputFormatter(unittest.TestCase):
                 "content": "def greet():\n    return 'Hello!'"
             }
         ]
-        # 獲取 repository2prompt 包的根目錄
         package_root = Path(__file__).parent.parent
-        # 構建模板文件的完整路徑
         self.template_path = str(package_root / "repository2prompt" / "templates" / "default_template.j2")
         
-        # 確保模板文件存在
         if not os.path.exists(self.template_path):
             raise FileNotFoundError(f"Template file not found: {self.template_path}")
 

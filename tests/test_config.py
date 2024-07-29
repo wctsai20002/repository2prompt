@@ -35,7 +35,7 @@ split_format_prompts:
         config = load_config()
         
         self.assertIn('custom_format', config['supported_output_formats'])
-        self.assertIn('split', config['supported_output_formats'])  # 現在這個斷言應該能通過
+        self.assertIn('split', config['supported_output_formats'])
         self.assertEqual(config['split_format_prompts']['initial'], "Custom initial prompt")
 
     def test_update_config(self):
