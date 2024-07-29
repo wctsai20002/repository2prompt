@@ -17,6 +17,34 @@ supported_file_extensions:
   - .json
   - .yaml
   - .yml
+  - .h
+  - .rb
+  - .ts
+  - .php
+  - .cs
+  - .swift
+  - .go
+  - .rs
+  - .sh
+  - .bat
+  - .pl
+  - .r
+  - .m
+  - .lua
+  - .kt
+  - .dart
+  - .asm
+  - .sql
+  - .vb
+  - .vbs
+  - .ps1
+  - .groovy
+  - .scala
+  - .clj
+  - .erl
+  - .ex
+  - .fs
+  - .hs
 
 # Directories and files to ignore
 ignore_dirs:
