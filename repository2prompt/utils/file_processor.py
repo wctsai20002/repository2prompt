@@ -1,15 +1,15 @@
 import os
-from ..config import MAX_FILE_SIZE, SUPPORTED_FILE_EXTENSIONS, IGNORE_DIRS, IGNORE_FILES
+from ..config import CONFIG
 
 def is_supported_file(file_name):
     _, extension = os.path.splitext(file_name)
-    return extension.lower() in SUPPORTED_FILE_EXTENSIONS and file_name not in IGNORE_FILES
+    return extension.lower() in CONFIG['supported_file_extensions'] and file_name not in CONFIG['ignore_files']
 
 def is_within_size_limit(file_size):
-    return file_size <= MAX_FILE_SIZE
+    return file_size <= CONFIG['max_file_size']
 
 def should_process_directory(dir_name):
-    return dir_name not in IGNORE_DIRS
+    return dir_name not in CONFIG['ignore_dirs']
 
 def process_files(repo_content, is_local=False):
     processed_files = []

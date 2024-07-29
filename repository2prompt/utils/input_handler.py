@@ -1,7 +1,7 @@
 import os
 import re
 from urllib.parse import urlparse
-from ..config import IGNORE_DIRS, IGNORE_FILES
+from ..config import CONFIG
 
 def is_github_url(input_path):
     """
@@ -54,10 +54,10 @@ def get_local_files(directory):
     files = []
     for root, dirs, filenames in os.walk(directory):
         # Remove ignored directories
-        dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
+        dirs[:] = [d for d in dirs if d not in CONFIG['ignore_dirs']]
         
         for filename in filenames:
-            if filename not in IGNORE_FILES:
+            if filename not in CONFIG['ignore_files']:
                 file_path = os.path.join(root, filename)
                 files.append({
                     'name': filename,

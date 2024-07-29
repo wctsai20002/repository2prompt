@@ -34,17 +34,3 @@ def _update_config(base_config, new_config):
             base_config[key] = value
 
 CONFIG = load_config()
-
-# Expose configuration values as module-level variables
-GITHUB_API_BASE_URL = CONFIG['github_api_base_url']
-GITHUB_API_TOKEN = CONFIG.get('github_api_token')
-MAX_FILE_SIZE = CONFIG['max_file_size']
-SUPPORTED_FILE_EXTENSIONS = CONFIG['supported_file_extensions']
-IGNORE_DIRS = CONFIG['ignore_dirs']
-IGNORE_FILES = CONFIG['ignore_files']
-SUPPORTED_OUTPUT_FORMATS = CONFIG['supported_output_formats']
-DEFAULT_OUTPUT_FORMAT = CONFIG['default_output_format']
-MAX_FILES_TO_PROCESS = CONFIG['max_files_to_process']
-MAX_PROMPT_LENGTH = CONFIG['max_prompt_length']
-INCLUDE_FILE_METADATA = CONFIG['include_file_metadata']
-DEFAULT_TEMPLATE_PATH = CONFIG['default_template_path']

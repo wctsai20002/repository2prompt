@@ -1,8 +1,9 @@
 # GitHub API configuration
 github_api_base_url: "https://api.github.com"
+github_api_token: ""
 
 # File processing configuration
-max_file_size: 1048576  # 1MB
+max_file_size: 104857600  # 100MB
 supported_file_extensions:
   - .py
   - .js

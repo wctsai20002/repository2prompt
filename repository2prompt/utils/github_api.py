@@ -1,7 +1,7 @@
 import requests
 import base64
 import os
-from ..config import GITHUB_API_BASE_URL, GITHUB_API_TOKEN, IGNORE_DIRS, IGNORE_FILES
+from ..config import CONFIG
 
 class GitHubAPIError(Exception):
     """Custom exception for GitHub API errors"""
@@ -22,8 +22,8 @@ class GitHubAPIError(Exception):
 def get_headers():
     """Return headers for API requests"""
     headers = {'Accept': 'application/vnd.github.v3+json'}
-    if GITHUB_API_TOKEN:
-        headers['Authorization'] = f'token {GITHUB_API_TOKEN}'
+    if CONFIG['github_api_token']:
+        headers['Authorization'] = f"token {CONFIG['github_api_token']}"
     return headers
 
 def get_default_branch(repo_url):
@@ -38,7 +38,7 @@ def get_default_branch(repo_url):
     except ValueError:
         raise GitHubAPIError(f"Invalid GitHub URL: {repo_url}")
 
-    api_url = f"{GITHUB_API_BASE_URL}/repos/{username}/{repo_name}"
+    api_url = f"{CONFIG['github_api_base_url']}/repos/{username}/{repo_name}"
     
     try:
         response = requests.get(api_url, headers=get_headers())
@@ -65,7 +65,7 @@ def fetch_repo_content(repo_url):
     # Get the default branch
     default_branch = get_default_branch(repo_url)
 
-    api_url = f"{GITHUB_API_BASE_URL}/repos/{username}/{repo_name}/git/trees/{default_branch}?recursive=1"
+    api_url = f"{CONFIG['github_api_base_url']}/repos/{username}/{repo_name}/git/trees/{default_branch}?recursive=1"
     
     try:
         response = requests.get(api_url, headers=get_headers())
@@ -77,7 +77,7 @@ def fetch_repo_content(repo_url):
         
         files = []
         for item in tree:
-            if item['type'] == 'blob' and not any(ignored in item['path'] for ignored in IGNORE_DIRS + IGNORE_FILES):
+            if item['type'] == 'blob' and not any(ignored in item['path'] for ignored in CONFIG['ignore_dirs'] + CONFIG['ignore_files']):
                 files.append({
                     'name': os.path.basename(item['path']),
                     'path': item['path'],
