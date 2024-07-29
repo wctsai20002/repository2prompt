@@ -12,7 +12,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/wctsai20002/repository2prompt",
-    packages=find_packages(),
+    packages=find_packages(include=['repository2prompt', 'repository2prompt.*']),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
