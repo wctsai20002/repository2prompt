@@ -126,6 +126,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-[Your Name] - [your.email@example.com]
-
 Project Link: https://github.com/wctsai20002/repository2prompt
