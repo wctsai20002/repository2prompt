@@ -44,13 +44,23 @@ repository2prompt [OPTIONS] INPUT_PATH
 Options:
 - `-t, --template PATH`: Path to a custom Jinja2 template file
 - `-f, --format [markdown|json|text|split]`: Output format (default: markdown)
+- `-o, --output PATH`: Output file path (default: repository_name.{format})
 - `--help`: Show help message
 
 Example:
 
 ```bash
-repository2prompt https://github.com/octocat/octocat.github.io -f json
+# Convert a GitHub repository to JSON format and save to a specific file
+repository2prompt https://github.com/octocat/Hello-World -f json -o output.json
+
+# Convert a local directory to markdown and save with default name
+repository2prompt /path/to/local/repo -f markdown
+
+# Use a custom template and save the output to a specific file
+repository2prompt https://github.com/user/repo -t custom_template.j2 -o custom_output.md
 ```
+
+If no output file is specified, the result will be saved in the current directory with the name `repository_name_prompt.{extension}`, where `{extension}` is the chosen output format.
 
 ### Python API
 
