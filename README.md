@@ -51,7 +51,7 @@ Example:
 
 ```bash
 # Convert a GitHub repository to JSON format and save to a specific file
-repository2prompt https://github.com/octocat/Hello-World -f json -o output.json
+repository2prompt https://github.com/octocat/octocat.github.io -f json -o output.json
 
 # Convert a local directory to markdown and save with default name
 repository2prompt /path/to/local/repo -f markdown
