@@ -74,6 +74,29 @@ result = converter.process()
 print(result)
 ```
 
+Generates prompts in split format, and then sends each prompt to LLM sequentially.
+
+```python
+import yaml
+import json
+from repository2prompt import Repository2Prompt, CONFIG
+
+converter = Repository2Prompt("https://github.com/octocat/octocat.github.io", output_format="split")
+result = converter.process()
+prompts = json.loads(result)
+
+for item in prompts:
+    prompt = item['prompt']
+    content = item['content']
+    
+    # Combine prompt and content
+    full_message = f"{prompt}\n\n{content}"
+    print(full_message)
+    
+    # Send to LLM and get response
+    response = chat_with_llm(full_message)
+```
+
 ## Configuration
 
 Repository2Prompt uses a YAML configuration file. The default configuration is located in `default_config.yaml` within the package. You can override the default settings by creating a `.repository2prompt.yaml` file in your home directory.
