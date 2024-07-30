@@ -1,12 +1,11 @@
 import os
 import yaml
 from pathlib import Path
-from pkg_resources import resource_filename
+from pkg_resources import resource_filename, resource_stream
 
 def load_config():
     # Load default config
-    default_config_path = Path(__file__).parent / 'default_config.yaml'
-    with open(default_config_path, 'r') as f:
+    with resource_stream('repository2prompt', 'default_config.yaml') as f:
         config = yaml.safe_load(f)
 
     # Load user config if it exists
