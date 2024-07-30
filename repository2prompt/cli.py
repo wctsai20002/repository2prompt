@@ -15,7 +15,9 @@ def get_file_extension(format):
 def main():
     parser = argparse.ArgumentParser(description="Convert GitHub repositories or local directories into LLM prompts.")
     parser.add_argument("input_path", help="GitHub repository URL or path to local directory")
-    parser.add_argument("-t", "--template", help="Path to custom Jinja2 template file")
+    parser.add_argument("-t", "--template", 
+                        default=CONFIG['default_template_path'],
+                        help="Path to custom Jinja2 template file (default: %(default)s)")
     parser.add_argument("-f", "--format", choices=CONFIG['supported_output_formats'], 
                         default=CONFIG['default_output_format'],
                         help=f"Output format (default: {CONFIG['default_output_format']})")

@@ -1,6 +1,7 @@
 import os
 import yaml
 from pathlib import Path
+from pkg_resources import resource_filename
 
 def load_config():
     # Load default config
@@ -21,6 +22,8 @@ def load_config():
         with open(custom_config_path, 'r') as f:
             custom_config = yaml.safe_load(f)
         _update_config(config, custom_config)
+    
+    config['default_template_path'] = resource_filename('repository2prompt', 'templates/default_template.j2')
 
     return config
 
