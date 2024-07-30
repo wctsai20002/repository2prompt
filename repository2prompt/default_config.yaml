@@ -84,6 +84,3 @@ max_files_to_process: 100
 # Prompt generation configuration
 max_prompt_length: 100000000
 include_file_metadata: true
-
-# Template configuration
-default_template_path: "templates/default_template.j2"
