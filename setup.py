@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="repository2prompt",
-    version="0.1.0",
+    version="1.0.0",
     author="tweichuan",
     author_email="wctsai20002@gmail.com",
     description="A tool to convert GitHub repositories into LLM prompts",
