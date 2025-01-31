@@ -124,7 +124,7 @@ if __name__ == "__main__":
         repo_content = fetch_repo_content(test_repo_url)
         processed_files = []
         
-        for item in repo_content[:CONFIG['max_files_to_process']]:
+        for item in repo_content:
             file_content = fetch_file_content(item['url'])
             processed_files.append({
                 'path': item['path'],

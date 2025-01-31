@@ -31,7 +31,7 @@ class Repository2Prompt:
             processed_files = file_processor.process_files(repo_files, is_local=(input_data['type'] == 'local_directory'))
 
             # Fetch file contents
-            for file in processed_files[:CONFIG['max_files_to_process']]:
+            for file in processed_files:
                 if input_data['type'] == 'github_url':
                     file['content'] = github_api.fetch_file_content(file['url'])
                 else:

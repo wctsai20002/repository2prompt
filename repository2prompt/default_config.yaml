@@ -77,10 +77,3 @@ split_format_prompts:
   file_content: "Here is the code for the file at `{file_path}`"
   final: "That's all the files."
   conclusion: "All {file_count} files from the repository have been provided."
-
-# Repository processing configuration
-max_files_to_process: 100
-
-# Prompt generation configuration
-max_prompt_length: 100000000
-include_file_metadata: true

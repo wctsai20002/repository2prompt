@@ -189,8 +189,6 @@ Key configuration options include:
 - `max_file_size`: Maximum file size to process (in bytes)
 - `supported_file_extensions`: List of supported file extensions
 - `ignore_dirs` and `ignore_files`: Lists of directories and files to ignore
-- `max_files_to_process`: Maximum number of files to process
-- `max_prompt_length`: Maximum length of the generated prompt
 - `split_format_prompts`: Prompts of output
 
 Example of a custom configuration file:
@@ -206,7 +204,6 @@ supported_file_extensions:
   - .py
   - .js
   - .md
-max_files_to_process: 50
 ```
 
 Remember that any setting not specified in your custom configuration will use the default value from the package's default configuration.

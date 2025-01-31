@@ -55,7 +55,6 @@ def main():
     # Example 3: Using custom configuration (Text format)
     print("Example 3: Using custom configuration (Text format)")
     custom_config = CONFIG.copy()
-    custom_config['max_files_to_process'] = 5
     custom_converter = Repository2Prompt("https://github.com/octocat/octocat.github.io", output_format="text")
     custom_result = custom_converter.process()
     
